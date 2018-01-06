@@ -4,7 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strconv"
 
+	"github.com/jasonlvhit/gocron"
 	_ "github.com/jpfuentes2/go-env/autoload"
 )
 
@@ -27,7 +29,7 @@ func main() {
 
 	// Start in daemon mode (runs like cron on a timer.)
 	case "daemon":
-		fmt.Println("DDD")
+		runDaemon()
 
 	// Run a complete backup once.
 	case "run-once":
@@ -65,6 +67,23 @@ func parseCmdFlags() *CmdAction {
 
 	// If we get here we assume daemon mode.
 	return &CmdAction{Action: "daemon", Value: ""}
+}
+
+//
+// Run in Daemon mode
+//
+func runDaemon() {
+
+	Log("Starting Cloudmanic Backup In Daemon Mode: Backing up every " + os.Getenv("HOURS_BETWEEN_BACKUPS") + " Hours.")
+
+	// Get the duration
+	dur, _ := strconv.ParseInt(os.Getenv("HOURS_BETWEEN_BACKUPS"), 10, 64)
+
+	// Setup jobs we need to run
+	gocron.Every(uint64(dur)).Hours().Do(runFullBackup)
+
+	// function Start start all the pending jobs
+	<-gocron.Start()
 }
 
 //
