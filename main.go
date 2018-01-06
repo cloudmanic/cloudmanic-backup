@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"strconv"
 
@@ -117,6 +118,19 @@ func runFullBackup() {
 	if err != nil {
 		Log("Backup failed: " + err.err.Error())
 		return
+	}
+
+	// Send health check notice.
+	if len(os.Getenv("PING_SUCCESS_URL")) > 0 {
+
+		resp, err := http.Get(os.Getenv("PING_SUCCESS_URL"))
+
+		if err != nil {
+			Log("Could send health check - " + os.Getenv("PING_SUCCESS_URL"))
+		}
+
+		defer resp.Body.Close()
+
 	}
 
 	// Successful backup.
