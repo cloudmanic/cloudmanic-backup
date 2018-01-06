@@ -94,26 +94,28 @@ func runFullBackup() {
 
 	// Setup the MYSQL connection (the only db we support at the moment)
 	m := MySQL{
-		Host:       os.Getenv("MYSQL_HOST"),
-		Port:       os.Getenv("MYSQL_PORT"),
-		DB:         os.Getenv("MYSQL_DB"),
-		User:       os.Getenv("MYSQL_DB_USER"),
-		Password:   os.Getenv("MYSQL_PASSWORD"),
-		EncryptKey: os.Getenv("ENCRYPT_KEY"),
+		Host:          cfg.MysqlHost,
+		Port:          cfg.MysqlPort,
+		DB:            cfg.MysqlDb,
+		User:          cfg.MysqlUser,
+		Password:      cfg.MysqlPassword,
+		EncryptKey:    cfg.EncryptKey,
+		SizeCheckLow:  cfg.DbSizeCheckLow,
+		SizeCheckHigh: cfg.DbSizeCheckHigh,
 	}
 
 	// Store this backup with S3 (the only storage we support at the moment)
 	store := &S3{
-		Region:       os.Getenv("OBJECT_REGION"),
-		Bucket:       os.Getenv("OBJECT_BUCKET"),
-		AccessKey:    os.Getenv("OBJECT_ACCESS_KEY_ID"),
-		ClientSecret: os.Getenv("OBJECT_SECRET_ACCESS_KEY"),
-		EndPoint:     os.Getenv("OBJECT_ENDPOINT"),
+		Region:       cfg.ObjectRegion,
+		Bucket:       cfg.ObjectBucket,
+		AccessKey:    cfg.ObjectAccessKeyId,
+		ClientSecret: cfg.ObjectSecreteAccessKey,
+		EndPoint:     cfg.ObjectEndpoint,
 	}
 
 	// Backup the database and then send it to our database store.
 	result := m.Export()
-	err := result.To(os.Getenv("BACKUP_DB_STORE_DIR"), store)
+	err := result.To(cfg.BackupDbStoreDir, store)
 
 	if err != nil {
 		Log("Backup failed: " + err.err.Error())
@@ -121,12 +123,12 @@ func runFullBackup() {
 	}
 
 	// Send health check notice.
-	if len(os.Getenv("PING_SUCCESS_URL")) > 0 {
+	if len(cfg.PintSuccessUrl) > 0 {
 
-		resp, err := http.Get(os.Getenv("PING_SUCCESS_URL"))
+		resp, err := http.Get(cfg.PintSuccessUrl)
 
 		if err != nil {
-			Log("Could send health check - " + os.Getenv("PING_SUCCESS_URL"))
+			Log("Could send health check - " + cfg.PintSuccessUrl)
 		}
 
 		defer resp.Body.Close()
@@ -146,7 +148,7 @@ func decryptFile(file string, key string) {
 	content, err := readFromFile(file)
 
 	if err != nil {
-		fmt.Println(err)
+		Log(err.Error())
 		os.Exit(1)
 	}
 

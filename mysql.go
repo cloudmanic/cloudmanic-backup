@@ -22,19 +22,31 @@ var (
 type MySQL struct {
 	// DB Host (e.g. 127.0.0.1)
 	Host string
+
 	// DB Port (e.g. 3306)
 	Port string
+
 	// DB Name
 	DB string
+
 	// DB User
 	User string
+
 	// DB Password
 	Password string
+
 	// Extra mysqldump options
 	// e.g []string{"--extended-insert"}
 	Options []string
+
 	// Key to encrypt the backup with.
 	EncryptKey string
+
+	// The size the backup most be bigger than (bytes)
+	SizeCheckLow int64
+
+	// The size the backup most be smaller than (bytes)
+	SizeCheckHigh int64
 }
 
 //
@@ -59,6 +71,9 @@ func (x MySQL) Export() *ExportResult {
 		result.Error = makeErr(err, string(out))
 		return result
 	}
+
+	// Check to make sure the backup is within the range we expected
+	AlertsBackupSize(dumpPath, x.SizeCheckLow, x.SizeCheckHigh)
 
 	// Remove non-tar'ed version.
 	os.Remove(dumpPath)
