@@ -1,0 +1,58 @@
+version: '2.1'
+
+services:
+
+  # App
+  backup:
+
+    hostname: ${COMPOSE_PROJECT_NAME}
+
+    container_name: ${COMPOSE_PROJECT_NAME}
+
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        P_UID: ${P_UID}
+        P_GID: ${P_GID}       
+    
+    image: ${COMPOSE_PROJECT_NAME}/cloudmanic-backup
+
+    restart: always
+
+    environment:   
+      BACKUP_NAME: ${BACKUP_NAME}      
+      ALERT_EMAIL: ${ALERT_EMAIL}     
+      OBJECT_REGION: ${OBJECT_REGION}
+      OBJECT_BUCKET: ${OBJECT_BUCKET}
+      OBJECT_ACCESS_KEY_ID: ${OBJECT_ACCESS_KEY_ID}
+      OBJECT_SECRET_ACCESS_KEY: ${OBJECT_SECRET_ACCESS_KEY}
+      OBJECT_ENDPOINT: ${OBJECT_ENDPOINT}      
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}     
+      MAIL_DRIVER: ${MAIL_DRIVER}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_ENCRYPTION: ${MAIL_ENCRYPTION}
+      MAIL_FROM_EMAIL: ${MAIL_FROM_EMAIL}      
+      MAILGUN_DOMAIN: ${MAILGUN_DOMAIN}
+      MAILGUN_API_KEY: ${MAILGUN_API_KEY}      
+      ENCRYPT_KEY: ${ENCRYPT_KEY}     
+      BACKUP_DB_STORE_DIR: ${BACKUP_DB_STORE_DIR}      
+      HOURS_BETWEEN_BACKUPS: ${HOURS_BETWEEN_BACKUPS}     
+      DB_SIZE_CHECK_LOW: ${DB_SIZE_CHECK_LOW}     
+      DB_SIZE_CHECK_HIGH: ${DB_SIZE_CHECK_HIGH}      
+      PING_SUCCESS_URL: ${PING_SUCCESS_URL}
+
+    networks:
+      - shared
+
+networks:
+  shared:
+    external:
+      name: shared 
