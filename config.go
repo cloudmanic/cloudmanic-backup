@@ -10,6 +10,8 @@ var (
 )
 
 type Config struct {
+	BackupName             string `env:"BACKUP_NAME"`
+	AlertEmail             string `env:"ALERT_EMAIL"`
 	ObjectRegion           string `env:"OBJECT_REGION"`
 	ObjectBucket           string `env:"OBJECT_BUCKET"`
 	ObjectAccessKeyId      string `env:"OBJECT_ACCESS_KEY_ID"`
@@ -26,6 +28,15 @@ type Config struct {
 	PintSuccessUrl         string `env:"PING_SUCCESS_URL"`
 	DbSizeCheckLow         int64  `env:"DB_SIZE_CHECK_LOW"`
 	DbSizeCheckHigh        int64  `env:"DB_SIZE_CHECK_HIGH"`
+	MailDriver             string `env:"MAIL_DRIVER"`
+	MailHost               string `env:"MAIL_HOST"`
+	MailPort               int    `env:"MAIL_PORT"`
+	MailUsername           string `env:"MAIL_USERNAME"`
+	MailPassword           string `env:"MAIL_PASSWORD"`
+	MailEncryption         string `env:"MAIL_ENCRYPTION"`
+	MailFromEmail          string `env:"MAIL_FROM_EMAIL"`
+	MailGunDomain          string `env:"MAILGUN_DOMAIN"`
+	MailGunApiKey          string `env:"MAILGUN_API_KEY"`
 }
 
 //
