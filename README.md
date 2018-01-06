@@ -1,12 +1,7 @@
-### Generate public-private keypair
+# Usage
 
-https://www.everythingcli.org/secure-mysqldump-script-with-encryption-and-compression/
+* ./cloudmanic-backup (this will run in Daemon mode backing up every X hours)
 
-```openssl req -x509 -nodes -newkey rsa:2048 -keyout mysqldump-secure.priv.pem -out mysqldump-secure.pub.pem```
+* ./cloudmanic-backup --backup (this will run one backup and then die)
 
-
-
-go run *.go --decrypt=/Users/spicer/Development/cloudmanic-backup/tmp/cloudmanic_com_1515207144.sql.tar.gz.enc
-
-
-go run *.go --backup
+* ./cloudmanic-backup --decrypt=/some/path/to/backup/cloudmanic_com_1515207144.sql.tar.gz.enc (This will decrypt a backup -- first step in restoring)
