@@ -60,7 +60,9 @@ func (x MySQL) Export() *ExportResult {
 
 	options := append(x.dumpOptions(), fmt.Sprintf(`-r%v`, dumpPath))
 	out, err := exec.Command(MysqlDumpCmd, options...).Output()
+
 	if err != nil {
+		Log(MysqlDumpCmd + " Failed to run correctly.")
 		result.Error = makeErr(err, string(out))
 		return result
 	}
@@ -68,6 +70,7 @@ func (x MySQL) Export() *ExportResult {
 	result.Path = dumpPath + ".tar.gz"
 	_, err = exec.Command(TarCmd, "-czf", result.Path, dumpPath).Output()
 	if err != nil {
+		Log(TarCmd + " Failed to run correctly.")
 		result.Error = makeErr(err, string(out))
 		return result
 	}
@@ -82,7 +85,7 @@ func (x MySQL) Export() *ExportResult {
 	encPath, err := x.encryptFile(result.Path)
 
 	if err != nil {
-		result.Error = makeErr(err, "")
+		result.Error = makeErr(err, "asdfasd")
 		return result
 	}
 

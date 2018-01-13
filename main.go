@@ -115,10 +115,16 @@ func runFullBackup() {
 
 	// Backup the database and then send it to our database store.
 	result := m.Export()
+
+	if result.Error != nil {
+		Log("Backup failed (001): " + result.Error.err.Error())
+		return
+	}
+
 	err := result.To(cfg.BackupDbStoreDir, store)
 
 	if err != nil {
-		Log("Backup failed: " + err.err.Error())
+		Log("Backup failed (002): " + err.err.Error())
 		return
 	}
 
