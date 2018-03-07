@@ -8,4 +8,6 @@
 
 # Decrypting
 
-* This is a helpful command for one off decrypts. `export ENCRYPT_KEY=YOURENCRYPTKEYHERE && cloudmanic-backup -decrypt=your-database.sql.tar.gz.enc` 
+This is a helpful command for one off decrypts. 
+
+`export ENCRYPT_KEY=YOURENCRYPTKEYHERE && cloudmanic-backup -decrypt=your-database.sql.tar.gz.enc` 
