@@ -43,7 +43,6 @@ type Config struct {
 // Init....
 //
 func init() {
-
 	cfg = Config{}
 
 	// Parse the config

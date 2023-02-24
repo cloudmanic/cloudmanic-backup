@@ -21,7 +21,6 @@ type CmdAction struct {
 // Main()
 //
 func main() {
-
 	// Check for CLI flags.
 	mode := parseCmdFlags()
 
@@ -39,16 +38,13 @@ func main() {
 	// Decrypt the file we pass in.
 	case "decrypt":
 		decryptFile(mode.Value, os.Getenv("ENCRYPT_KEY"))
-
 	}
-
 }
 
 //
 // Parse command line flags.
 //
 func parseCmdFlags() *CmdAction {
-
 	// Is this a decrypt action?
 	decryptCmd := flag.String("decrypt", "", "Path to file to decrypt.")
 
@@ -74,7 +70,6 @@ func parseCmdFlags() *CmdAction {
 // Run in Daemon mode
 //
 func runDaemon() {
-
 	Log("Starting Cloudmanic Backup In Daemon Mode: Backing up every " + os.Getenv("HOURS_BETWEEN_BACKUPS") + " Hours.")
 
 	// Get the duration
@@ -91,7 +86,6 @@ func runDaemon() {
 // Run one full backup.
 //
 func runFullBackup() {
-
 	// Setup the MYSQL connection (the only db we support at the moment)
 	m := MySQL{
 		Host:          cfg.MysqlHost,
@@ -149,7 +143,6 @@ func runFullBackup() {
 // Decrypt a file we pass in from the command line.
 //
 func decryptFile(file string, key string) {
-
 	// Read file.
 	content, err := readFromFile(file)
 
